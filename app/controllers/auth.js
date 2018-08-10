@@ -3,8 +3,10 @@ const User = require('../models/user');
 const logger = require('../services/logger');
 const conf = require('../conf');
 
+// const Session = require('../models/session');
+
 function tokenForUser(user) {
-  const token = jwt.encode({ sub: user.id, iat: Date.now() }, conf.APP_SECRET);
+  const token = jwt.encode({ sub: user.id, iat: Date.now() }, conf.APP_KEY);
   logger.debug('token: %s', token);
   return token;
 }
