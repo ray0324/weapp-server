@@ -1,4 +1,6 @@
 const app = require('../app');
 const conf = require('../app/conf');
+const logger = require('../app/services/logger');
+
 const port = conf.PORT || '3000';
-app.listen(port, () => console.log(`listening on port ${port}`));
+app.listen(port, () => logger.info(`App started at Port ${port}`));
