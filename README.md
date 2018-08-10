@@ -4,7 +4,7 @@
 
 To start the app,please create runtime envrionment first, it's very easy to
 config.
-create an file named '.env' at the root of this project and config it like
+Create an file named '.env' at the root of this project and config it like
 this: 
 
 ```conf
