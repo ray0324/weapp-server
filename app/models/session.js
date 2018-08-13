@@ -4,13 +4,18 @@ const Schema = mongoose.Schema;
 
 
 const schema = new Schema({
-  open_id: String,
-  uuid: String,
-  skey: String,
-  create_time: Date,
-  last_visit_time: Date,
+  openid: { type: String, unique: true },
   session_key: String,
-  user_info: String
+  create_time: { type: Date, default: Date.now },
+  last_visit_time: { type: Date, default: Date.now },
+  user_info: {
+    nickName: String,
+    gender: Number,
+    city: String,
+    province: String,
+    language: String,
+    avatarUrl: String
+  }
 });
 
 

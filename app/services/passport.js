@@ -1,3 +1,4 @@
+const axios = require('axios');
 const passport = require('koa-passport');
 const LocalStrategy = require('passport-local').Strategy;
 const JwtStrategy = require('passport-jwt').Strategy;
@@ -5,26 +6,8 @@ const ExtractJwt = require('passport-jwt').ExtractJwt;
 const conf = require('../conf');
 const logger = require('./logger');
 
-const User = require('../models/user');
+// const User = require('../models/user');
 
-// 用户名&密码登录策略
-// passport.use(new LocalStrategy({
-//   usernameField: 'email'
-// }, async (email, password, done) => {
-//   try {
-//     // 查询用户
-//     const user = await User.findOne({ email });
-//     if (!user) throw new Error('用户不存在!');
-//     // 比较密码
-//     const isMatch = await user.compare(password);
-//     // 密码不匹配
-//     if (!isMatch) return done(null, false);
-//     // 登录成功
-//     done(null, user);
-//   } catch (err) {
-//     done(err);
-//   }
-// }));
 
 // 微信登陆策略
 passport.use(new LocalStrategy({
@@ -33,16 +16,37 @@ passport.use(new LocalStrategy({
   try {
     // 查询用户
     // const user = await User.findOne({ email });
+    debugger;
     logger.log(`微信登陆code:${code}`);
-    const result = await axios.get(`${conf.WX_AUTH_URL}?appid=${conf.APP_ID}&secret=${conf.APP_SECRET}&js_code=${code}&grant_type=authorization_code`);
+    const result = await axios({
+      url: conf.WX_AUTH_URL,
+      method: 'GET',
+      params: {
+        appid: conf.APP_ID,
+        secret: conf.APP_SECRET,
+        js_code: code,
+        grant_type: 'authorization_code'
+      }
+    }).then(res => {
+      res = res.data;
+      if (res.errcode || !res.openid || !res.session_key) {
+        logger.debug('%s: %O', ERRORS.ERR_GET_SESSION_KEY, res.errmsg);
+        throw new Error(`${ERRORS.ERR_GET_SESSION_KEY}\n${JSON.stringify(res)}`);
+      } else {
+        logger.debug('openid: %s, session_key: %s', res.openid, res.session_key);
+        return res;
+      }
+    });
+
     logger.log(result);
-    if (!user) throw new Error('用户不存在!');
+
+    // if (!result) throw new Error('用户不存在!');
     // 比较密码
-    const isMatch = await user.compare(password);
+    // const isMatch = await user.compare(password);
     // 密码不匹配
-    if (!isMatch) return done(null, false);
+    // if (!isMatch) return done(null, false);
     // 登录成功
-    done(null, user);
+    done(null, result);
   } catch (err) {
     done(err);
   }
