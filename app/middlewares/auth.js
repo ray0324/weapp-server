@@ -5,8 +5,8 @@ const logger = require('../services/logger');
 
 // 微信登陆认证
 async function wx(ctx, next) {
-  const { code, rawData } = ctx.request.body;
-  logger.debug(`code:${code},rawData:${rawData}`);
+  const { code } = ctx.request.body;
+  logger.debug(`code:${code}`);
   // 请求session
   const res = await axios({
     url: conf.WX_AUTH_URL,
@@ -29,6 +29,7 @@ async function wx(ctx, next) {
   ctx.state = {
     $session: res.data
   };
+
   await next();
 };
 
@@ -39,9 +40,7 @@ async function jwt(ctx, next) {
   logger.debug(`token: ${token}`);
   // 验证token 这里可以做时长验证
   const user = decode(token, conf.APP_KEY);
-  ctx.state = {
-    user: user
-  };
+  ctx.state = { user };
   await next();
 }
 

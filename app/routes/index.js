@@ -1,13 +1,13 @@
 const Router = require('koa-router');
 const auth = require('../middlewares/auth');
-const session = require('../controllers/auth');
+const user = require('../controllers/user');
 
-const users = new Router();
+const userRouter = new Router();
 
-users.prefix('/user');
-users.post('/login', auth.wx, session.login);
-users.get('/test', auth.jwt, session.test);
+userRouter.prefix('/user');
+userRouter.post('/login', auth.wx, user.login);
+userRouter.post('/update', auth.jwt, user.updateInfo);
 
 module.exports = {
-  users
+  userRouter
 };
