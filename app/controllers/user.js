@@ -46,9 +46,7 @@ async function login(ctx, next) {
 async function updateInfo(ctx, next) {
   const { sub } = ctx.state.user;
   const { info } = ctx.request.body;
-
   logger.debug('sub: %s', sub);
-
   const result = await User.findByIdAndUpdate(sub, {
     info: info,
     last_visit_time: Date.now()
