@@ -7,7 +7,7 @@
     {
       "type": "node",
       "request": "attach",
-      "name": "附加到进程",
+      "name": "启动调试",
       "port": 9229,
     }
   ]

@@ -9,7 +9,7 @@ module.exports = async function(ctx, next) {
     // 输出详细的错误信息
     ctx.body = {
       code: -1,
-      err_msg: e && e.message ? e.message : e.toString()
+      err_msg: e.message
     };
   }
 };

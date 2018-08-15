@@ -10,9 +10,9 @@ const conf = require('./conf');
 
 const { userRouter } = routers;
 
-
+// 连接Mongodb数据库
 mongoose.connect(conf.MONGODB_HOST, { useNewUrlParser: true });
-
+// 创建Koa实例
 const app = new Koa();
 // middlewares
 app.use(cors());
