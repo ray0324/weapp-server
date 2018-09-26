@@ -8,7 +8,7 @@ const onerror = require('./middlewares/onerror');
 const routers = require('./routes');
 const conf = require('./conf');
 
-const { userRouter } = routers;
+const { userRouter, proxyRouter } = routers;
 
 // 连接Mongodb数据库
 mongoose.connect(conf.MONGODB_HOST, { useNewUrlParser: true });
@@ -21,5 +21,6 @@ app.use(bodyparser({ enableTypes: ['json', 'form', 'text'] }));
 app.use(json());
 app.use(koaStatic(__dirname + '/public'));
 app.use(userRouter.routes(), userRouter.allowedMethods());
+app.use(proxyRouter.routes(), proxyRouter.allowedMethods());
 
 module.exports = app;
